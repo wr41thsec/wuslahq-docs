@@ -1,0 +1,227 @@
+{
+  "spec": "https://wuslahq.com/specs/signed-origin-requests",
+  "version": "v1",
+  "testKey": "7d5b4e3a2c1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d",
+  "now": 1789900000,
+  "skewSec": 300,
+  "runner": "Judge timestamp skew against `now`, not the wall clock. Feed the vectors in file order through ONE shared nonce set: the replay vector reuses an earlier nonce and only fails when the set is shared. `body` is the exact bytes to hash (UTF-8); `headers` is what the verifier is handed; `expect` is the verdict it must reach.",
+  "vectors": [
+    {
+      "name": "POST with a JSON body",
+      "expect": "pass",
+      "timestamp": "1789899990",
+      "nonce": "00000000000000000000000000000001",
+      "method": "POST",
+      "path": "/v1/quote?symbol=AAPL",
+      "body": "{\"n\":1}",
+      "bodySha256": "2bfd14f43d17fc7cea24e0917a8879b4b2f880b8baeec1b9d90fbaad655e71bd",
+      "canonical": "1789899990\n00000000000000000000000000000001\nPOST\n/v1/quote?symbol=AAPL\n2bfd14f43d17fc7cea24e0917a8879b4b2f880b8baeec1b9d90fbaad655e71bd",
+      "expectedSignature": "sha256=301fe5b938a09dd9fbcbb87441e95dc6d3f985ff95d07f8d74ea6c661bc3bf10",
+      "presentedSignature": "sha256=301fe5b938a09dd9fbcbb87441e95dc6d3f985ff95d07f8d74ea6c661bc3bf10",
+      "headers": {
+        "x-wusla-timestamp": "1789899990",
+        "x-wusla-nonce": "00000000000000000000000000000001",
+        "x-wusla-key-id": "v1",
+        "x-wusla-signature": "sha256=301fe5b938a09dd9fbcbb87441e95dc6d3f985ff95d07f8d74ea6c661bc3bf10"
+      }
+    },
+    {
+      "name": "GET with a query string (path includes it)",
+      "expect": "pass",
+      "timestamp": "1789899990",
+      "nonce": "00000000000000000000000000000002",
+      "method": "GET",
+      "path": "/v1/items?a=1&b=2",
+      "body": "",
+      "bodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "canonical": "1789899990\n00000000000000000000000000000002\nGET\n/v1/items?a=1&b=2\ne3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expectedSignature": "sha256=a691852db3763812e689d6540b1211241796c3a40782a202c2ecd22f88aa5e56",
+      "presentedSignature": "sha256=a691852db3763812e689d6540b1211241796c3a40782a202c2ecd22f88aa5e56",
+      "headers": {
+        "x-wusla-timestamp": "1789899990",
+        "x-wusla-nonce": "00000000000000000000000000000002",
+        "x-wusla-key-id": "v1",
+        "x-wusla-signature": "sha256=a691852db3763812e689d6540b1211241796c3a40782a202c2ecd22f88aa5e56"
+      }
+    },
+    {
+      "name": "Empty body hashes the empty string",
+      "expect": "pass",
+      "timestamp": "1789899990",
+      "nonce": "00000000000000000000000000000003",
+      "method": "DELETE",
+      "path": "/v1/items/42",
+      "body": "",
+      "bodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "canonical": "1789899990\n00000000000000000000000000000003\nDELETE\n/v1/items/42\ne3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expectedSignature": "sha256=9908ab625e4a79e6f6f3ecaf0029d2b63340d32c24e02462d96bd7f2edc22d4a",
+      "presentedSignature": "sha256=9908ab625e4a79e6f6f3ecaf0029d2b63340d32c24e02462d96bd7f2edc22d4a",
+      "headers": {
+        "x-wusla-timestamp": "1789899990",
+        "x-wusla-nonce": "00000000000000000000000000000003",
+        "x-wusla-key-id": "v1",
+        "x-wusla-signature": "sha256=9908ab625e4a79e6f6f3ecaf0029d2b63340d32c24e02462d96bd7f2edc22d4a"
+      }
+    },
+    {
+      "name": "Unicode body, hashed as UTF-8 bytes",
+      "expect": "pass",
+      "timestamp": "1789899990",
+      "nonce": "00000000000000000000000000000004",
+      "method": "POST",
+      "path": "/v1/echo",
+      "body": "{\"text\":\"héllo wörld — 日本語 ✓\"}",
+      "bodySha256": "a13e4f5ebd2bf88930a07b87725d1ae324f1c067ee1424aa8aa09157198afaf4",
+      "canonical": "1789899990\n00000000000000000000000000000004\nPOST\n/v1/echo\na13e4f5ebd2bf88930a07b87725d1ae324f1c067ee1424aa8aa09157198afaf4",
+      "expectedSignature": "sha256=d12e1ad4c68afa54c8a30de25ad2d828a5d477a0a86c8a9927de290f3d299a7c",
+      "presentedSignature": "sha256=d12e1ad4c68afa54c8a30de25ad2d828a5d477a0a86c8a9927de290f3d299a7c",
+      "headers": {
+        "x-wusla-timestamp": "1789899990",
+        "x-wusla-nonce": "00000000000000000000000000000004",
+        "x-wusla-key-id": "v1",
+        "x-wusla-signature": "sha256=d12e1ad4c68afa54c8a30de25ad2d828a5d477a0a86c8a9927de290f3d299a7c"
+      }
+    },
+    {
+      "name": "Percent-encoded path and query kept verbatim",
+      "expect": "pass",
+      "timestamp": "1789899990",
+      "nonce": "00000000000000000000000000000005",
+      "method": "GET",
+      "path": "/x%20y?q=a%2Bb",
+      "body": "",
+      "bodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "canonical": "1789899990\n00000000000000000000000000000005\nGET\n/x%20y?q=a%2Bb\ne3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expectedSignature": "sha256=ca049540353ae69c10225b698c08c2bbed7b55205ab560f68a769c2e7ab2eb20",
+      "presentedSignature": "sha256=ca049540353ae69c10225b698c08c2bbed7b55205ab560f68a769c2e7ab2eb20",
+      "headers": {
+        "x-wusla-timestamp": "1789899990",
+        "x-wusla-nonce": "00000000000000000000000000000005",
+        "x-wusla-key-id": "v1",
+        "x-wusla-signature": "sha256=ca049540353ae69c10225b698c08c2bbed7b55205ab560f68a769c2e7ab2eb20"
+      }
+    },
+    {
+      "name": "Repeated query keys in wire order",
+      "expect": "pass",
+      "timestamp": "1789899990",
+      "nonce": "00000000000000000000000000000006",
+      "method": "GET",
+      "path": "/v1/search?k=1&k=2&k=1",
+      "body": "",
+      "bodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "canonical": "1789899990\n00000000000000000000000000000006\nGET\n/v1/search?k=1&k=2&k=1\ne3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expectedSignature": "sha256=98cac7e3763de778bfb4139b099e6e11e4588dcc77a92d3aaf1e0015d3e9c484",
+      "presentedSignature": "sha256=98cac7e3763de778bfb4139b099e6e11e4588dcc77a92d3aaf1e0015d3e9c484",
+      "headers": {
+        "x-wusla-timestamp": "1789899990",
+        "x-wusla-nonce": "00000000000000000000000000000006",
+        "x-wusla-key-id": "v1",
+        "x-wusla-signature": "sha256=98cac7e3763de778bfb4139b099e6e11e4588dcc77a92d3aaf1e0015d3e9c484"
+      }
+    },
+    {
+      "name": "Trailing slash preserved",
+      "expect": "pass",
+      "timestamp": "1789899990",
+      "nonce": "00000000000000000000000000000007",
+      "method": "GET",
+      "path": "/v1/items/",
+      "body": "",
+      "bodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "canonical": "1789899990\n00000000000000000000000000000007\nGET\n/v1/items/\ne3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expectedSignature": "sha256=a2105dca55a242ad68a261fbbd10469fbf8f9e03592823b4ca9c8590532d4352",
+      "presentedSignature": "sha256=a2105dca55a242ad68a261fbbd10469fbf8f9e03592823b4ca9c8590532d4352",
+      "headers": {
+        "x-wusla-timestamp": "1789899990",
+        "x-wusla-nonce": "00000000000000000000000000000007",
+        "x-wusla-key-id": "v1",
+        "x-wusla-signature": "sha256=a2105dca55a242ad68a261fbbd10469fbf8f9e03592823b4ca9c8590532d4352"
+      }
+    },
+    {
+      "name": "Object body re-serialised the way the gateway sends it",
+      "expect": "pass",
+      "timestamp": "1789899990",
+      "nonce": "00000000000000000000000000000008",
+      "method": "POST",
+      "path": "/v1/orders",
+      "body": "{\"id\":7,\"items\":[\"a\",\"b\"],\"note\":\"x y\"}",
+      "bodyObject": {
+        "id": 7,
+        "items": [
+          "a",
+          "b"
+        ],
+        "note": "x y"
+      },
+      "bodySha256": "a6a069b72b62ec5525eec94d004923b38cbcb5a57362015a213eca9cdaddcd1d",
+      "canonical": "1789899990\n00000000000000000000000000000008\nPOST\n/v1/orders\na6a069b72b62ec5525eec94d004923b38cbcb5a57362015a213eca9cdaddcd1d",
+      "expectedSignature": "sha256=6e97d4473412d85a912982412e2b78f8a6c93eba531471abfa5b8a0cf22d6280",
+      "presentedSignature": "sha256=6e97d4473412d85a912982412e2b78f8a6c93eba531471abfa5b8a0cf22d6280",
+      "headers": {
+        "x-wusla-timestamp": "1789899990",
+        "x-wusla-nonce": "00000000000000000000000000000008",
+        "x-wusla-key-id": "v1",
+        "x-wusla-signature": "sha256=6e97d4473412d85a912982412e2b78f8a6c93eba531471abfa5b8a0cf22d6280"
+      }
+    },
+    {
+      "name": "Tampered signature (last byte flipped)",
+      "expect": "fail",
+      "timestamp": "1789899990",
+      "nonce": "00000000000000000000000000000009",
+      "method": "POST",
+      "path": "/v1/quote?symbol=AAPL",
+      "body": "{\"n\":1}",
+      "bodySha256": "2bfd14f43d17fc7cea24e0917a8879b4b2f880b8baeec1b9d90fbaad655e71bd",
+      "canonical": "1789899990\n00000000000000000000000000000009\nPOST\n/v1/quote?symbol=AAPL\n2bfd14f43d17fc7cea24e0917a8879b4b2f880b8baeec1b9d90fbaad655e71bd",
+      "expectedSignature": "sha256=8757c1e4c25289328584f583bf58996dda8a20bb20c79c3aefcb793bccf2af40",
+      "presentedSignature": "sha256=8757c1e4c25289328584f583bf58996dda8a20bb20c79c3aefcb793bccf2af41",
+      "headers": {
+        "x-wusla-timestamp": "1789899990",
+        "x-wusla-nonce": "00000000000000000000000000000009",
+        "x-wusla-key-id": "v1",
+        "x-wusla-signature": "sha256=8757c1e4c25289328584f583bf58996dda8a20bb20c79c3aefcb793bccf2af41"
+      }
+    },
+    {
+      "name": "Stale timestamp (301s before now)",
+      "expect": "fail",
+      "timestamp": "1789899699",
+      "nonce": "00000000000000000000000000000010",
+      "method": "GET",
+      "path": "/v1/items",
+      "body": "",
+      "bodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "canonical": "1789899699\n00000000000000000000000000000010\nGET\n/v1/items\ne3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expectedSignature": "sha256=d21b011a258022b2a286146193a03ce6c72a6e91d42670c5294b8c5076b3a622",
+      "presentedSignature": "sha256=d21b011a258022b2a286146193a03ce6c72a6e91d42670c5294b8c5076b3a622",
+      "headers": {
+        "x-wusla-timestamp": "1789899699",
+        "x-wusla-nonce": "00000000000000000000000000000010",
+        "x-wusla-key-id": "v1",
+        "x-wusla-signature": "sha256=d21b011a258022b2a286146193a03ce6c72a6e91d42670c5294b8c5076b3a622"
+      }
+    },
+    {
+      "name": "Replayed nonce (same as vector 1)",
+      "expect": "fail",
+      "timestamp": "1789899990",
+      "nonce": "00000000000000000000000000000001",
+      "method": "POST",
+      "path": "/v1/quote?symbol=AAPL",
+      "body": "{\"n\":1}",
+      "bodySha256": "2bfd14f43d17fc7cea24e0917a8879b4b2f880b8baeec1b9d90fbaad655e71bd",
+      "canonical": "1789899990\n00000000000000000000000000000001\nPOST\n/v1/quote?symbol=AAPL\n2bfd14f43d17fc7cea24e0917a8879b4b2f880b8baeec1b9d90fbaad655e71bd",
+      "expectedSignature": "sha256=301fe5b938a09dd9fbcbb87441e95dc6d3f985ff95d07f8d74ea6c661bc3bf10",
+      "presentedSignature": "sha256=301fe5b938a09dd9fbcbb87441e95dc6d3f985ff95d07f8d74ea6c661bc3bf10",
+      "headers": {
+        "x-wusla-timestamp": "1789899990",
+        "x-wusla-nonce": "00000000000000000000000000000001",
+        "x-wusla-key-id": "v1",
+        "x-wusla-signature": "sha256=301fe5b938a09dd9fbcbb87441e95dc6d3f985ff95d07f8d74ea6c661bc3bf10"
+      }
+    }
+  ]
+}
